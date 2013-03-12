@@ -6,4 +6,16 @@ public class Component {
         this.mean = mean;
         this.stdev = stdev;
     }
+
+    public Double getWeight() {
+        return weight;
+    }
+
+    public Double getMean() {
+        return mean;
+    }
+
+    public Double getStdev() {
+        return stdev;
+    }
 }

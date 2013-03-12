@@ -6,4 +6,4 @@ AI Homework #5 - GMMs, HMMs
 
 COMPILE:
     (in klinglerHW5 folder):
-    javac *.java
+    javac -classpath commons-math3-3.1.1.jar *.java

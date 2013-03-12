@@ -1,39 +1,32 @@
-import java.util.ArrayList;
+import org.apache.commons.math3.distribution.NormalDistribution;
 
 public class Mixture {
-    private ArrayList<Component> components;
-    private ArrayList<Double> data;
+    private Component[] components;
+    private DataSet data;
 
-    public Mixture(ArrayList<Double> data, int components) {
+    public Mixture(DataSet data) {
         this.data = data;
-        this.components = new ArrayList<Component>();
-        Double mean = getMean(data);
-        Double stdev = getStdev(data, mean);
+        this.components = new Component[this.data.components()];
+        Double mean = this.data.getMean();
+        Double stdev = this.data.getStdev();
         //random initialization of component parameters
-        for (int i = 0; i < components; i++) {
-            Component c = new Component(1.0/Double.parseDouble(components + ""),mean+(mean*(Math.random()-0.5)), stdev+(stdev*(Math.random()-0.5)));
-            this.components.add(c);
+        for (int i = 0; i < this.data.components(); i++) {
+            Component c = new Component(1.0/Double.parseDouble(this.data.components() + ""),mean+(mean*(Math.random()-0.5)), stdev+(stdev*(Math.random()-0.5)));
+            this.components[i] = c;
         }
-
     }
 
-    private Double getStdev(ArrayList<Double> data, Double mean) {
-        Double stdev = 0.0;
-        for (Double d : data)
-            stdev += Math.pow(d-mean,2);
-
-        stdev /= data.size();
-        stdev = Math.sqrt(stdev);
-        return stdev;
+    public void Expectation() {
+        for (int i = 0; i < this.components.length; i++) {
+            NormalDistribution dist = new NormalDistribution(this.components[i].getMean(), this.components[i].getStdev());
+            for (Object d : this.data) {
+                Datum dat = (Datum)d;
+                Double prob = dist.cumulativeProbability(dat.val()) * this.components[i].getWeight();
+                dat.setProb(i,prob);
+            }
+        }
     }
 
-    private Double getMean(ArrayList<Double> data) {
-        Double mean = 0.0;
-        for (Double d : data )
-            mean += d;
 
-        mean /= data.size();
-        return mean;
-    }
 
 }
