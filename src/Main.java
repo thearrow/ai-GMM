@@ -8,7 +8,7 @@ public class Main {
 
     public static void main(String[] args) {
         ArrayList<Double> data = readData("data1.txt");
-        System.out.println(data.get(0));
+        Mixture mix = new Mixture(data, 3);
     }
 
     public static ArrayList<Double> readData(String filePath) {
