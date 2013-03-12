@@ -25,6 +25,11 @@ public class Mixture {
                 dat.setProb(i,prob);
             }
         }
+        this.data.normalizeProbs();
+        System.out.println(this.data.nI(0));
+        System.out.println(this.data.nI(1));
+        System.out.println(this.data.nI(2));
+
     }
 
 

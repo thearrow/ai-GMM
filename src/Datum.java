@@ -11,7 +11,22 @@ public class Datum {
         return this.val;
     }
 
+    public Double sumProbs() {
+        Double sum = 0.0;
+        for (Double prob : probs)
+            sum += prob;
+        return sum;
+    }
+
     public void setProb(int i, Double val) {
         this.probs[i] = val;
+    }
+
+    public Double getProb(int i) {
+        return this.probs[i];
+    }
+
+    public int numProbs() {
+        return this.probs.length;
     }
 }
