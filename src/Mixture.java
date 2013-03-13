@@ -29,6 +29,26 @@ public class Mixture {
         System.out.println(this.data.nI(0));
         System.out.println(this.data.nI(1));
         System.out.println(this.data.nI(2));
+    }
+
+    public void Maximization() {
+        Double newMean = 0.0;
+        Double newStdev = 0.0;
+        for (int i = 0; i < this.components.length; i++) {
+            for (int j = 0; j < this.data.size(); j++) {
+                newMean += this.data.get(j).getProb(i)*this.data.get(j).val();
+            }
+            newMean /= this.data.nI(i);
+            this.components[i].setMean(newMean);
+
+            for (int j = 0; j < this.data.size(); j++) {
+                newStdev += this.data.get(j).getProb(i)*Math.pow((this.data.get(j).val() - newMean), 2);
+            }
+            newStdev /= this.data.nI(i);
+            this.components[i].setStdev(newStdev);
+
+            this.components[i].setWeight(this.data.nI(i)/this.data.size());
+        }
 
     }
 

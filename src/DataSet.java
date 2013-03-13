@@ -7,7 +7,6 @@ import java.util.Iterator;
 
 public class DataSet implements Iterable{
     private ArrayList<Datum> data;
-    private Double stdev, mean;
     private int components;
 
     public DataSet(String fileName, int components) {
@@ -66,6 +65,14 @@ public class DataSet implements Iterable{
             sum += d.getProb(i);
         }
         return sum;
+    }
+
+    public int size(){
+        return this.data.size();
+    }
+
+    public Datum get(int i) {
+        return data.get(i);
     }
 
     @Override

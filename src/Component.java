@@ -18,4 +18,16 @@ public class Component {
     public Double getStdev() {
         return stdev;
     }
+
+    public void setWeight(Double weight) {
+        this.weight = weight;
+    }
+
+    public void setMean(Double mean) {
+        this.mean = mean;
+    }
+
+    public void setStdev(Double stdev) {
+        this.stdev = stdev;
+    }
 }
