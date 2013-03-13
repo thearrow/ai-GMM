@@ -50,15 +50,6 @@ public class DataSet implements Iterable{
         return this.components;
     }
 
-    public void normalizeProbs() {
-        for (Datum d : this.data) {
-            Double sum = d.sumProbs();
-            for (int i = 0; i < d.numProbs(); i++) {
-                d.setProb(i,d.getProb(i)/sum);
-            }
-        }
-    }
-
     public Double nI(int i) {
         Double sum = 0.0;
         for (Datum d : this.data) {

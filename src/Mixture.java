@@ -11,21 +11,26 @@ public class Mixture {
         Double stdev = this.data.getStdev();
         //random initialization of component parameters
         for (int i = 0; i < this.data.components(); i++) {
-            Component c = new Component(1.0/Double.parseDouble(this.data.components() + ""),mean+(mean*(Math.random()-0.5)), stdev+(stdev*(Math.random()-0.5)));
+            Component c = new Component(1.0/Double.parseDouble(this.data.components() + ""),mean+((Math.random()-0.5)*10), stdev+((Math.random()-0.5)*10));
             this.components[i] = c;
         }
     }
 
     public void Expectation() {
-        for (int i = 0; i < this.components.length; i++) {
-            NormalDistribution dist = new NormalDistribution(this.components[i].getMean(), this.components[i].getStdev());
-            for (Object d : this.data) {
-                Datum dat = (Datum)d;
-                Double prob = dist.cumulativeProbability(dat.val()) * this.components[i].getWeight();
-                dat.setProb(i,prob);
+        for (int i = 0; i < this.data.size(); i++) {
+            Double[] probs = new Double[this.data.components()];
+            for (int j = 0; j < this.components.length; j++) {
+                NormalDistribution dist = new NormalDistribution(this.components[j].getMean(), this.components[j].getStdev());
+                probs[j] = dist.cumulativeProbability(this.data.get(i).val()) * this.components[j].getWeight();
             }
+
+            //alpha normalize and set probs
+            Double sum = 0.0;
+            for (Double p : probs)
+                sum += p;
+            for (int j = 0; j < probs.length; j++)
+                this.data.get(i).setProb(j, probs[j]/sum);
         }
-        this.data.normalizeProbs();
     }
 
     public void Maximization() {
@@ -42,6 +47,7 @@ public class Mixture {
                 newStdev += this.data.get(j).getProb(i)*Math.pow((this.data.get(j).val() - newMean), 2);
             }
             newStdev /= this.data.nI(i);
+            newStdev = Math.sqrt(newStdev);
             this.components[i].setStdev(newStdev);
 
             this.components[i].setWeight(this.data.nI(i)/this.data.size());
@@ -64,6 +70,12 @@ public class Mixture {
         }
 
         return loglike;
+    }
+
+    public void printStats() {
+        for (Component c : this.components) {
+            System.out.println("C - mean: " + c.getMean() + " stdev: " + c.getStdev() + " weight: " + c.getWeight());
+        }
     }
 
 
