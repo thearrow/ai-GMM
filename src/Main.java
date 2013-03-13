@@ -10,13 +10,11 @@ public class Main {
             oldLog = mix.logLike();
             mix.Expectation();
             mix.Maximization();
-            mix.printStats();
-            System.out.println("");
+            System.out.println(mix.logLike());
         }
-        while (Math.abs(mix.logLike() - oldLog) > 0.05);
+        while (Math.abs(mix.logLike() - oldLog) > 0.001);
 
         mix.printStats();
-
     }
 
 }

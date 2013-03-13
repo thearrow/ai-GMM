@@ -1,5 +1,3 @@
-import org.apache.commons.math3.distribution.NormalDistribution;
-
 public class Mixture {
     private Component[] components;
     private DataSet data;
@@ -20,8 +18,8 @@ public class Mixture {
         for (int i = 0; i < this.data.size(); i++) {
             Double[] probs = new Double[this.data.components()];
             for (int j = 0; j < this.components.length; j++) {
-                NormalDistribution dist = new NormalDistribution(this.components[j].getMean(), this.components[j].getStdev());
-                probs[j] = dist.cumulativeProbability(this.data.get(i).val()) * this.components[j].getWeight();
+                Component c = this.components[j];
+                probs[j] = gaussian(this.data.get(i).val(), c.getMean(), c.getStdev()) * c.getWeight();
             }
 
             //alpha normalize and set probs
@@ -62,13 +60,11 @@ public class Mixture {
             Double sum = 0.0;
             for (int j = 0; j < this.components.length; j++) {
                 Component c = this.components[j];
-                NormalDistribution dist = new NormalDistribution(c.getMean(), c.getStdev());
                 sum += this.data.get(i).getProb(j) *
-                        (Math.log(dist.cumulativeProbability(this.data.get(i).val())) + Math.log(c.getWeight()));
+                        (Math.log(gaussian(this.data.get(i).val(),c.getMean(),c.getStdev())) + Math.log(c.getWeight()));
             }
             loglike += sum;
         }
-
         return loglike;
     }
 
@@ -76,6 +72,19 @@ public class Mixture {
         for (Component c : this.components) {
             System.out.println("C - mean: " + c.getMean() + " stdev: " + c.getStdev() + " weight: " + c.getWeight());
         }
+    }
+
+
+    /*
+        The following two methods courtesy of Robert Sedgewick:
+        http://introcs.cs.princeton.edu/java/22library/Gaussian.java.html
+        Used to calculate the PDF of a gaussian distribution with mean=mu, stddev=sigma
+     */
+    public Double standardGaussian(Double x) {
+        return Math.exp(-x*x / 2) / Math.sqrt(2 * Math.PI);
+    }
+    public Double gaussian(Double x, Double mu, Double sigma) {
+        return standardGaussian((x - mu) / sigma) / sigma;
     }
 
 
