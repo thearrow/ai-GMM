@@ -5,6 +5,9 @@ public class Datum {
     public Datum(String value, int components) {
         this.val = Double.parseDouble(value);
         this.probs = new Double[components];
+        for (int i = 0; i < probs.length; i++) {
+            this.probs[i] = 0.0;
+        }
     }
 
     public Double val(){

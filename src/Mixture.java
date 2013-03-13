@@ -26,9 +26,6 @@ public class Mixture {
             }
         }
         this.data.normalizeProbs();
-        System.out.println(this.data.nI(0));
-        System.out.println(this.data.nI(1));
-        System.out.println(this.data.nI(2));
     }
 
     public void Maximization() {
@@ -50,6 +47,23 @@ public class Mixture {
             this.components[i].setWeight(this.data.nI(i)/this.data.size());
         }
 
+    }
+
+    public Double logLike() {
+        Double loglike = 0.0;
+
+        for (int i = 0; i < this.data.size(); i++) {
+            Double sum = 0.0;
+            for (int j = 0; j < this.components.length; j++) {
+                Component c = this.components[j];
+                NormalDistribution dist = new NormalDistribution(c.getMean(), c.getStdev());
+                sum += this.data.get(i).getProb(j) *
+                        (Math.log(dist.cumulativeProbability(this.data.get(i).val())) + Math.log(c.getWeight()));
+            }
+            loglike += sum;
+        }
+
+        return loglike;
     }
 
 
