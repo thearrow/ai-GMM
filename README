@@ -7,3 +7,13 @@ AI Homework #5 - GMMs, HMMs
 COMPILE:
     (in klinglerHW5 folder):
     javac *.java
+
+RUN:
+    (in klinglerHW5 folder):
+    java Main <filename>
+
+    eg. java Main data1.txt
+
+
+ANSWERS TO QUESTIONS:
+    See included file answers.pdf

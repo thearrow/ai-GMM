@@ -1,18 +1,24 @@
 public class Main {
 
     public static void main(String[] args) {
-        Mixture mix = new Mixture(new DataSet("data1.txt", 3));
+        if (args.length <= 0) {
+            System.out.println("Usage: java Main <filename.txt>");
+            System.exit(1);
+        }
+        Mixture mix = new Mixture(new DataSet(args[0], 3));
 
         mix.printStats();
 
         Double oldLog = 0.0;
+        int count = 1;
         do {
             oldLog = mix.logLike();
             mix.Expectation();
             mix.Maximization();
-            System.out.println(mix.logLike());
+            System.out.println(count + "," + mix.logLike());
+            count++;
         }
-        while (Math.abs(mix.logLike() - oldLog) > 0.001);
+        while (Math.abs(mix.logLike() - oldLog) > 0.0001);
 
         mix.printStats();
     }

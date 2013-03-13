@@ -9,7 +9,7 @@ public class Mixture {
         Double stdev = this.data.getStdev();
         //random initialization of component parameters
         for (int i = 0; i < this.data.components(); i++) {
-            Component c = new Component(1.0/Double.parseDouble(this.data.components() + ""),mean+((Math.random()-0.5)*10), stdev+((Math.random()-0.5)*10));
+            Component c = new Component(1.0/Double.parseDouble(this.data.components() + ""),mean+((Math.random()-0.5)*4), stdev+((Math.random()-0.5)*4));
             this.components[i] = c;
         }
     }
