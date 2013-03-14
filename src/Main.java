@@ -1,11 +1,11 @@
 public class Main {
 
     public static void main(String[] args) {
-        if (args.length <= 0) {
-            System.out.println("Usage: java Main <filename.txt>");
+        if (args.length != 2) {
+            System.out.println("Usage: java Main <filename> <clusters>");
             System.exit(1);
         }
-        Mixture mix = new Mixture(new DataSet(args[0], 5));
+        Mixture mix = new Mixture(new DataSet(args[0], Integer.parseInt(args[1])));
 
         mix.printStats();
 

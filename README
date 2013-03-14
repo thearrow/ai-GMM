@@ -10,10 +10,8 @@ COMPILE:
 
 RUN:
     (in klinglerHW5 folder):
-    java Main <filename>
-
-    eg. java Main data1.txt
-
+    java Main <filename> <clusters>
+    eg. java Main data1.txt 3
 
 ANSWERS TO QUESTIONS:
     See included file answers.pdf
