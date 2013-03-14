@@ -26,8 +26,10 @@ public class Mixture {
             Double sum = 0.0;
             for (Double p : probs)
                 sum += p;
-            for (int j = 0; j < probs.length; j++)
-                this.data.get(i).setProb(j, probs[j] / sum);
+            for (int j = 0; j < probs.length; j++) {
+                Double normProb = probs[j]/sum;
+                this.data.get(i).setProb(j, normProb);
+            }
         }
     }
 
@@ -60,13 +62,19 @@ public class Mixture {
             Double sum = 0.0;
             for (int j = 0; j < this.components.length; j++) {
                 Component c = this.components[j];
-                sum += this.data.get(i).getProb(j) *
-                    (Math.log(gaussian(this.data.get(i).val(), c.getMean(), c.getStdev())) + Math.log(c.getWeight()));
+                Double prob = this.data.get(i).getProb(j);
+                Double val = this.data.get(i).val();
+                Double gauss = gaussian(val, c.getMean(), c.getStdev());
+                if (gauss == 0) {
+                    gauss = Double.MIN_NORMAL;
+                }
+                Double inner = Math.log(gauss)+ Math.log(c.getWeight());
+                if (inner.isInfinite() || inner.isNaN()) {
+                    return 0.0;
+                }
+                sum += prob * inner;
             }
             loglike += sum;
-        }
-        if (loglike > -5550) {
-            System.out.println("derp");
         }
         return loglike;
     }

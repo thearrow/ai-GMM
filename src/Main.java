@@ -9,16 +9,16 @@ public class Main {
 
         mix.printStats();
 
-        Double oldLog = 0.0;
-        int count = 1;
+        Double oldLog = mix.logLike();
+        Double newLog = oldLog - 100.0;
         do {
-            oldLog = mix.logLike();
+            oldLog = newLog;
             mix.Expectation();
             mix.Maximization();
-            System.out.println(count + "," + mix.logLike());
-            count++;
+            newLog = mix.logLike();
+            System.out.println(newLog);
         }
-        while (Math.abs(mix.logLike() - oldLog) > 0.00001);
+        while (newLog!=0 && Math.abs(newLog - oldLog) > 0.00001);
 
         mix.printStats();
     }
