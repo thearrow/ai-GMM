@@ -9,7 +9,7 @@ public class Mixture {
         Double stdev = this.data.getStdev();
         //random initialization of component parameters
         for (int i = 0; i < this.data.components(); i++) {
-            Component c = new Component(1.0/Double.parseDouble(this.data.components() + ""),mean+((Math.random()-0.5)*4), stdev+((Math.random()-0.5)*4));
+            Component c = new Component(1.0 / Double.parseDouble(this.data.components() + ""), mean + ((Math.random() - 0.5) * 4), stdev + ((Math.random() - 0.5) * 4));
             this.components[i] = c;
         }
     }
@@ -27,7 +27,7 @@ public class Mixture {
             for (Double p : probs)
                 sum += p;
             for (int j = 0; j < probs.length; j++)
-                this.data.get(i).setProb(j, probs[j]/sum);
+                this.data.get(i).setProb(j, probs[j] / sum);
         }
     }
 
@@ -35,35 +35,38 @@ public class Mixture {
         Double newMean = 0.0;
         Double newStdev = 0.0;
         for (int i = 0; i < this.components.length; i++) {
-            for (int j = 0; j < this.data.size(); j++) {
-                newMean += this.data.get(j).getProb(i)*this.data.get(j).val();
-            }
+            //MEAN
+            for (int j = 0; j < this.data.size(); j++)
+                newMean += this.data.get(j).getProb(i) * this.data.get(j).val();
             newMean /= this.data.nI(i);
             this.components[i].setMean(newMean);
 
-            for (int j = 0; j < this.data.size(); j++) {
-                newStdev += this.data.get(j).getProb(i)*Math.pow((this.data.get(j).val() - newMean), 2);
-            }
+            //STDEV
+            for (int j = 0; j < this.data.size(); j++)
+                newStdev += this.data.get(j).getProb(i) * Math.pow((this.data.get(j).val() - newMean), 2);
             newStdev /= this.data.nI(i);
             newStdev = Math.sqrt(newStdev);
             this.components[i].setStdev(newStdev);
 
-            this.components[i].setWeight(this.data.nI(i)/this.data.size());
+            //WEIGHT
+            this.components[i].setWeight(this.data.nI(i) / this.data.size());
         }
 
     }
 
     public Double logLike() {
         Double loglike = 0.0;
-
         for (int i = 0; i < this.data.size(); i++) {
             Double sum = 0.0;
             for (int j = 0; j < this.components.length; j++) {
                 Component c = this.components[j];
                 sum += this.data.get(i).getProb(j) *
-                        (Math.log(gaussian(this.data.get(i).val(),c.getMean(),c.getStdev())) + Math.log(c.getWeight()));
+                    (Math.log(gaussian(this.data.get(i).val(), c.getMean(), c.getStdev())) + Math.log(c.getWeight()));
             }
             loglike += sum;
+        }
+        if (loglike > -5550) {
+            System.out.println("derp");
         }
         return loglike;
     }
@@ -81,12 +84,12 @@ public class Mixture {
         Used to calculate the PDF of a gaussian distribution with mean=mu, stddev=sigma
      */
     public Double standardGaussian(Double x) {
-        return Math.exp(-x*x / 2) / Math.sqrt(2 * Math.PI);
+        return Math.exp(-x * x / 2) / Math.sqrt(2 * Math.PI);
     }
+
     public Double gaussian(Double x, Double mu, Double sigma) {
         return standardGaussian((x - mu) / sigma) / sigma;
     }
-
 
 
 }

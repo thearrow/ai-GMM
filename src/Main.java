@@ -5,7 +5,7 @@ public class Main {
             System.out.println("Usage: java Main <filename.txt>");
             System.exit(1);
         }
-        Mixture mix = new Mixture(new DataSet(args[0], 3));
+        Mixture mix = new Mixture(new DataSet(args[0], 5));
 
         mix.printStats();
 
@@ -18,7 +18,7 @@ public class Main {
             System.out.println(count + "," + mix.logLike());
             count++;
         }
-        while (Math.abs(mix.logLike() - oldLog) > 0.0001);
+        while (Math.abs(mix.logLike() - oldLog) > 0.00001);
 
         mix.printStats();
     }

@@ -21,8 +21,4 @@ public class Datum {
     public Double getProb(int i) {
         return this.probs[i];
     }
-
-    public int numProbs() {
-        return this.probs.length;
-    }
 }
